@@ -10,6 +10,10 @@ COPY . .
 # Make mvnw executable (for Linux builds)
 RUN chmod +x mvnw
 
+# Expose port
+EXPOSE 8080
+
+
 # Build the project (skip tests to save time)
 RUN ./mvnw clean package -DskipTests
 
