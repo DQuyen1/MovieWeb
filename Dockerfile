@@ -2,8 +2,6 @@
 FROM eclipse-temurin:17-jdk
 
 
-ENV HOST 0.0.0.0
-
 
 # Set working directory inside the container
 WORKDIR /app
