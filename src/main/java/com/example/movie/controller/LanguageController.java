@@ -18,6 +18,7 @@ import java.util.Date;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api/v1/languages")
 public class LanguageController {
 
@@ -32,19 +33,19 @@ public class LanguageController {
 
   @GetMapping
   public ResponseEntity<ResponseMessage> getAllLanguage() {
-    return new ResponseEntity<>(new ResponseMessage("Languages retrieved successfully", languageService.getAll(), new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Languages retrieved successfully", languageService.getAll()), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseMessage> getLanguage(@PathVariable int id) {
     LanguageDTO languageDTO = languageService.findLanguageById(id);
-    return new ResponseEntity<>(new ResponseMessage("Language retrieved successfully", languageDTO, new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Language retrieved successfully", languageDTO), HttpStatus.OK);
   }
 
 
   @PostMapping
   public ResponseEntity<ResponseMessage> createLanguage(@Valid @RequestBody Language language) {
-    return new ResponseEntity<>(new ResponseMessage("created new language successfully", languageService.createLanguage(language) ,new Date()), HttpStatus.CREATED);
+    return new ResponseEntity<>(new ResponseMessage("created new language successfully", languageService.createLanguage(language)), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")
@@ -52,7 +53,7 @@ public class LanguageController {
 
     LanguageDTO updatedLanguage = languageService.updateLanguage(id, languageDTO);
 
-    return new ResponseEntity<>(new ResponseMessage("Update language successfully", updatedLanguage, new Date()), HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(new ResponseMessage("Update language successfully", updatedLanguage), HttpStatus.ACCEPTED);
   }
 
   @DeleteMapping("/{id}")
@@ -63,12 +64,12 @@ public class LanguageController {
     if (isDeleted) {
       return new ResponseEntity<>(
         new ResponseMessage("Language with id #" + id
-          + " deleted successfully", null, new Date()),
+          + " deleted successfully", null),
         HttpStatus.OK
       );
     } else {
       return new ResponseEntity<>(
-        new ResponseMessage("Language not found", null, new Date()),
+        new ResponseMessage("Language not found", null),
         HttpStatus.NOT_FOUND
       );
     }

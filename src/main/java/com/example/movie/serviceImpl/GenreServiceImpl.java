@@ -4,7 +4,7 @@ package com.example.movie.serviceImpl;
 import com.example.movie.dto.GenreDTO;
 import com.example.movie.entity.Genre;
 import com.example.movie.exception.ResourceNotFoundException;
-import com.example.movie.mapper.GerenMapper;
+import com.example.movie.mapper.GenreMapper;
 import com.example.movie.repository.GenreRepository;
 import com.example.movie.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-  final private GerenMapper gerenMapper;
+  final private GenreMapper genreMapper;
   final private GenreRepository repo;
 
   @Autowired
-  public GenreServiceImpl(GenreRepository repo, GerenMapper gerenMapper) {
+  public GenreServiceImpl(GenreRepository repo, GenreMapper genreMapper) {
     this.repo = repo;
-    this.gerenMapper = gerenMapper;
+    this.genreMapper = genreMapper;
   }
 
 
   @Override
   public List<GenreDTO> getAll() {
     List<Genre> genres = repo.findAll();
-    return genres.stream().map(gerenMapper::convertToDTO).collect(Collectors.toList());
+    return genres.stream().map(genreMapper::convertToDTO).collect(Collectors.toList());
 
   }
 
@@ -39,14 +39,14 @@ public class GenreServiceImpl implements GenreService {
       return new ResourceNotFoundException("Geren not found");
     });;
 
-    return gerenMapper.convertToDTO(genre);
+    return genreMapper.convertToDTO(genre);
 
   }
 
   @Override
   public GenreDTO createGeren(Genre newGenre) {
     Genre genre = repo.save(newGenre);
-    return gerenMapper.convertToDTO(genre);
+    return genreMapper.convertToDTO(genre);
   }
 
   @Override
@@ -62,7 +62,7 @@ public class GenreServiceImpl implements GenreService {
 
     Genre updatedGenre = repo.save(genre);
 
-    return gerenMapper.convertToDTO(updatedGenre);
+    return genreMapper.convertToDTO(updatedGenre);
   }
 
   @Override

@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.Set;
+
 @Entity
-@Table(name = "\"genre\"")
+@Table(name = "genres")
 public class Genre {
 
   @Id
@@ -14,7 +16,7 @@ public class Genre {
   @Column(name = "genre_id")
   private int id;
 
-  @Column(name = "name")
+  @Column(name = "name", unique = true)
   @NotNull(message = "name can not be null")
   @NotBlank(message = "name can not be empty string")
   private String name;
@@ -26,11 +28,17 @@ public class Genre {
   private Date create_at;
 
   @Column(name = "is_deleted")
-  @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   private boolean is_deleted;
 
+  @PrePersist
+  private void onCreate() {
+    if (this.create_at == null) this.create_at = new Date();
+    if (this.update_at == null) this.update_at = new Date();
+    this.is_deleted = false;
+  }
 
+  public Genre() {
+  }
 
   public Genre(int id, String name, Date update_at, Date create_at, boolean is_deleted) {
     this.id = id;
@@ -74,12 +82,12 @@ public class Genre {
   }
 
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
+
   public boolean isIs_deleted() {
     return is_deleted;
   }
 
-  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") @NotBlank(message = "is_deleted can not be empty string") boolean is_deleted) {
+  public void setIs_deleted(@NotNull(message = "is_deleted can not be null")  boolean is_deleted) {
     this.is_deleted = is_deleted;
   }
 }

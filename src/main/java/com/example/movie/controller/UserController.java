@@ -2,6 +2,8 @@ package com.example.movie.controller;
 
 
 import com.example.movie.dto.UserDTO;
+import com.example.movie.entity.LoginRequest;
+import com.example.movie.entity.RegisterRequest;
 import com.example.movie.entity.ResponseMessage;
 import com.example.movie.entity.User;
 import com.example.movie.serviceImpl.UserServiceImpl;
@@ -15,6 +17,7 @@ import java.util.Date;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
 
@@ -23,26 +26,25 @@ public class UserController {
   //if only has 1 constructor this annotation autowired is optional
   @Autowired
   public UserController(UserServiceImpl userService) {
-
     this.userService = userService;
   }
 
   @GetMapping
   public ResponseEntity<ResponseMessage> getAllUser() {
-    return new ResponseEntity<>(new ResponseMessage("Users retrieved successfully", userService.getAll(), new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Users retrieved successfully", userService.getAll()), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseMessage> getUser(@PathVariable int id) {
     UserDTO userDTO = userService.findUserById(id);
-    return new ResponseEntity<>(new ResponseMessage("User retrieved successfully", userDTO, new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("User retrieved successfully", userDTO), HttpStatus.OK);
   }
 
 
   @PostMapping
-  public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody User user) {
+  public ResponseEntity<ResponseMessage> createUser(@Valid @RequestBody RegisterRequest registerRequest) {
 
-    return new ResponseEntity<>(new ResponseMessage("created new user successfully", userService.createUser(user) ,new Date()), HttpStatus.CREATED);
+    return new ResponseEntity<>(new ResponseMessage("created new user successfully", userService.createUser(registerRequest)), HttpStatus.CREATED);
 
   }
 
@@ -51,7 +53,7 @@ public class UserController {
 
     UserDTO updatedUser = userService.updateUser(id, userDTO);
 
-    return new ResponseEntity<>(new ResponseMessage("Update user successfully", updatedUser, new Date()), HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(new ResponseMessage("Update user successfully", updatedUser), HttpStatus.ACCEPTED);
   }
 
   @DeleteMapping("/{id}")
@@ -62,18 +64,16 @@ public class UserController {
     if (isDeleted) {
       return new ResponseEntity<>(
         new ResponseMessage("User with id #" + id
-          + " deleted successfully", null, new Date()),
+          + " deleted successfully", null),
         HttpStatus.OK
       );
     } else {
       return new ResponseEntity<>(
-        new ResponseMessage("User not found", null, new Date()),
+        new ResponseMessage("User not found", null),
         HttpStatus.NOT_FOUND
       );
     }
   }
-
-
 
 
 }

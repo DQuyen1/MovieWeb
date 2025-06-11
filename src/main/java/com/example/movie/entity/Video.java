@@ -1,5 +1,6 @@
-package com.example.video.entity;
+package com.example.movie.entity;
 
+import com.example.movie.listener.VideoEntityListener;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,9 +8,10 @@ import jakarta.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
+@EntityListeners(VideoEntityListener.class)
 @Table(name = "\"Videos\"")
-public class Video {
 
+public class Video {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "video_id")
@@ -18,7 +20,7 @@ public class Video {
   @Column(name = "video_name")
   @NotNull(message = "Video's name can not be null")
   @NotBlank(message = "Video's name can not be empty string")
-  private String video_name;
+  private String videoName;
 
   @Column(name = "description")
   @NotNull(message = "description can not be null")
@@ -54,60 +56,84 @@ public class Video {
   @Column(name = "create_at")
   private Date create_at;
 
-
-
   @Column(name = "filePath")
-//  @NotNull(message = "filePath can not be null")
-//  @NotBlank(message = "status can not be empty string")
   private String filePath;
 
   @Column(name = "contentType")
   private String contentType;
 
+  @Column(name = "is_trending")
+  private boolean isTrending;
+
+  @Column(name = "is_top")
+  private boolean isTop;
+
+  @Column(name = "galleryImages")
+  private List<String> galleryImages;
 
   @Column(name = "is_deleted")
   @NotNull(message = "is_deleted can not be null")
   private boolean is_deleted;
 
-//  @ManyToMany(cascade = CascadeType.ALL)
-//  @JoinTable(
-//    name = "video_genres",
-//    joinColumns = @JoinColumn(name = "video_id"),
-//    inverseJoinColumns = @JoinColumn(name = "genre_id")
-//  )
-//  private Set<Genre> videoGenres = new HashSet<>();
-//
-//  @ManyToMany(cascade = CascadeType.ALL)
-//  @JoinTable(
-//    name = "video_languages",
-//    joinColumns = @JoinColumn(name = "video_id"),
-//    inverseJoinColumns = @JoinColumn(name = "language_id")
-//  )
-//  private Set<Language> videoLanguages = new HashSet<>();
-//
-//  @ManyToMany(cascade = CascadeType.ALL)
-//  @JoinTable(
-//    name = "video_countries",
-//    joinColumns = @JoinColumn(name = "video_id"),
-//    inverseJoinColumns = @JoinColumn(name = "country_id")
-//  )
-//  private Set<Country> videoCountries = new HashSet<>();
-//
-//  @ManyToMany(cascade = CascadeType.ALL)
-//  @JoinTable(
-//    name = "video_companies",
-//    joinColumns = @JoinColumn(name = "video_id"),
-//    inverseJoinColumns = @JoinColumn(name = "company_id")
-//  )
-//  private Set<Company> videoCompanies = new HashSet<>();
+
+  @ManyToOne
+  @JoinColumn(name = "language_id")
+  private Language language;
+
+
+  @ManyToMany
+  @JoinTable(
+          name = "video_genre",
+          joinColumns = @JoinColumn(name = "video_id"),
+          inverseJoinColumns = @JoinColumn(name = "genre_id")
+  )
+  private Set<Genre> genres;
+
+
+  @ManyToMany
+  @JoinTable(
+          name = "video_company",
+          joinColumns = @JoinColumn(name = "video_id"),
+          inverseJoinColumns = @JoinColumn(name = "company_id")
+  )
+  private Set<Company> companies;
+
+  @ManyToMany
+  @JoinTable(
+          name = "video_country",
+          joinColumns = @JoinColumn(name = "video_id"),
+          inverseJoinColumns = @JoinColumn(name = "country_id")
+  )
+  private Set<Country> countries;
+
+
+  @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Season> seasons;
+
+
+  @ManyToMany
+  @JoinTable(
+          name = "user_video_like",
+          joinColumns = @JoinColumn(name = "video_id"),
+          inverseJoinColumns = @JoinColumn(name = "user_id")
+  )
+  private Set<User> likedByUsers;
+
+
+//  @PrePersist
+//  private void onCreate() {
+//    if (this.create_at == null) this.create_at = new Date();
+//    if (this.update_at == null) this.update_at = new Date();
+//    this.is_deleted = false;
+//  }
 
 
   public Video() {
   }
 
-  public Video(int id, String video_name, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean is_deleted) {
+  public Video(int id, String videoName, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean isTrending, boolean isTop, boolean is_deleted, Language language, Set<Genre> genres, Set<Company> companies, Set<Country> countries, List<Season> seasons, Set<User> likedByUsers) {
     this.id = id;
-    this.video_name = video_name;
+    this.videoName = videoName;
     this.description = description;
     this.year = year;
     this.rating = rating;
@@ -118,7 +144,15 @@ public class Video {
     this.create_at = create_at;
     this.filePath = filePath;
     this.contentType = contentType;
+    this.isTrending = isTrending;
+    this.isTop = isTop;
     this.is_deleted = is_deleted;
+    this.language = language;
+    this.genres = genres;
+    this.companies = companies;
+    this.countries = countries;
+    this.seasons = seasons;
+    this.likedByUsers = likedByUsers;
   }
 
   public int getId() {
@@ -129,12 +163,12 @@ public class Video {
     this.id = id;
   }
 
-  public @NotNull(message = "Video's name can not be null") @NotBlank(message = "Video's name can not be empty string") String getVideo_name() {
-    return video_name;
+  public @NotNull(message = "Video's name can not be null") @NotBlank(message = "Video's name can not be empty string") String getVideoName() {
+    return videoName;
   }
 
-  public void setVideo_name(@NotNull(message = "Video's name can not be null") @NotBlank(message = "Video's name can not be empty string") String video_name) {
-    this.video_name = video_name;
+  public void setVideoName(@NotNull(message = "Video's name can not be null") @NotBlank(message = "Video's name can not be empty string") String videoName) {
+    this.videoName = videoName;
   }
 
   public @NotNull(message = "description can not be null") @NotBlank(message = "description can not be empty string") String getDescription() {
@@ -214,6 +248,21 @@ public class Video {
     this.is_deleted = is_deleted;
   }
 
+  public boolean isTrending() {
+    return isTrending;
+  }
+
+  public void setTrending(boolean trending) {
+    isTrending = trending;
+  }
+
+  public boolean isTop() {
+    return isTop;
+  }
+
+  public void setTop(boolean top) {
+    isTop = top;
+  }
 
   public
   //@NotNull(message = "filePath can not be null") @NotBlank(message = "status can not be empty string")
@@ -233,5 +282,61 @@ public class Video {
 
   public void setContentType(String contentType) {
     this.contentType = contentType;
+  }
+
+  public List<String> getGalleryImages() {
+    return galleryImages;
+  }
+
+  public void setGalleryImages(List<String> galleryImages) {
+    this.galleryImages = galleryImages;
+  }
+
+  public Language getLanguage() {
+    return language;
+  }
+
+  public void setLanguage(Language language) {
+    this.language = language;
+  }
+
+  public Set<Genre> getGenres() {
+    return genres;
+  }
+
+  public void setGenres(Set<Genre> genres) {
+    this.genres = genres;
+  }
+
+  public Set<Company> getCompanies() {
+    return companies;
+  }
+
+  public void setCompanies(Set<Company> companies) {
+    this.companies = companies;
+  }
+
+  public Set<Country> getCountries() {
+    return countries;
+  }
+
+  public void setCountries(Set<Country> countries) {
+    this.countries = countries;
+  }
+
+  public List<Season> getSeasons() {
+    return seasons;
+  }
+
+  public void setSeasons(List<Season> seasons) {
+    this.seasons = seasons;
+  }
+
+  public Set<User> getLikedByUsers() {
+    return likedByUsers;
+  }
+
+  public void setLikedByUsers(Set<User> likedByUsers) {
+    this.likedByUsers = likedByUsers;
   }
 }

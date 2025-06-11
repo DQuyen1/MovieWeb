@@ -14,10 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api/v1/companies")
 public class CompanyController {
 
@@ -32,20 +32,20 @@ public class CompanyController {
 
   @GetMapping
   public ResponseEntity<ResponseMessage> getAllCompany() {
-    return new ResponseEntity<>(new ResponseMessage("Companies retrieved successfully", companyService.getAll(), new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Companies retrieved successfully", companyService.getAll()), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseMessage> getcompany(@PathVariable int id) {
     CompanyDTO companyDTO = companyService.findCompanyById(id);
-    return new ResponseEntity<>(new ResponseMessage("Company retrieved successfully", companyDTO, new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Company retrieved successfully", companyDTO), HttpStatus.OK);
   }
 
 
   @PostMapping
   public ResponseEntity<ResponseMessage> createCompany(@Valid @RequestBody Company company) {
 
-    return new ResponseEntity<>(new ResponseMessage("Created new company successfully", companyService.createCompany(company) ,new Date()), HttpStatus.CREATED);
+    return new ResponseEntity<>(new ResponseMessage("Created new company successfully", companyService.createCompany(company)), HttpStatus.CREATED);
 
   }
 
@@ -54,7 +54,7 @@ public class CompanyController {
 
     CompanyDTO updatedCompany = companyService.updateCompany(id, companyDTO);
 
-    return new ResponseEntity<>(new ResponseMessage("Update company successfully", updatedCompany, new Date()), HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(new ResponseMessage("Update company successfully", updatedCompany), HttpStatus.ACCEPTED);
   }
 
   @DeleteMapping("/{id}")
@@ -65,12 +65,12 @@ public class CompanyController {
     if (isDeleted) {
       return new ResponseEntity<>(
         new ResponseMessage("Company with id #" + id
-          + " deleted successfully", null, new Date()),
+          + " deleted successfully", null),
         HttpStatus.OK
       );
     } else {
       return new ResponseEntity<>(
-        new ResponseMessage("Company not found", null, new Date()),
+        new ResponseMessage("Company not found", null),
         HttpStatus.NOT_FOUND
       );
     }

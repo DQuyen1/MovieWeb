@@ -14,6 +14,7 @@ import java.util.Date;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api/v1/genres")
 public class GenreController {
 
@@ -28,20 +29,20 @@ public class GenreController {
 
   @GetMapping
   public ResponseEntity<ResponseMessage> getAllGenre() {
-    return new ResponseEntity<>(new ResponseMessage("Genres retrieved successfully", genreService.getAll(), new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Genres retrieved successfully", genreService.getAll()), HttpStatus.OK);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<ResponseMessage> getGenre(@PathVariable int id) {
     GenreDTO genreDTO = genreService.findGerenById(id);
-    return new ResponseEntity<>(new ResponseMessage("Genre retrieved successfully", genreDTO, new Date()), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMessage("Genre retrieved successfully", genreDTO), HttpStatus.OK);
   }
 
 
   @PostMapping
   public ResponseEntity<ResponseMessage> createGenre(@Valid @RequestBody Genre genre) {
 
-    return new ResponseEntity<>(new ResponseMessage("Created new genre successfully", genreService.createGeren(genre) ,new Date()), HttpStatus.CREATED);
+    return new ResponseEntity<>(new ResponseMessage("Created new genre successfully", genreService.createGeren(genre)), HttpStatus.CREATED);
 
   }
 
@@ -50,7 +51,7 @@ public class GenreController {
 
     GenreDTO updatedGenre = genreService.updateGeren(id, genreDTO);
 
-    return new ResponseEntity<>(new ResponseMessage("Update genre successfully", updatedGenre, new Date()), HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(new ResponseMessage("Update genre successfully", updatedGenre), HttpStatus.ACCEPTED);
   }
 
   @DeleteMapping("/{id}")
@@ -61,12 +62,12 @@ public class GenreController {
     if (isDeleted) {
       return new ResponseEntity<>(
         new ResponseMessage("Genre with id #" + id
-          + " deleted successfully", null, new Date()),
+          + " deleted successfully", null),
         HttpStatus.OK
       );
     } else {
       return new ResponseEntity<>(
-        new ResponseMessage("Genre not found", null, new Date()),
+        new ResponseMessage("Genre not found", null),
         HttpStatus.NOT_FOUND
       );
     }

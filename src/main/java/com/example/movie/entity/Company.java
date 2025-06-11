@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.Set;
+
 @Entity
 @Table(name = "\"companies\"")
 public class Company {
@@ -20,20 +22,29 @@ public class Company {
   private String company_name;
 
 
-
   @Column(name = "update_at")
   private Date update_at;
 
   @Column(name = "create_at")
   private Date create_at;
 
+  @ManyToMany(mappedBy = "companies")
+  private Set<Video> videos;
+
   @Column(name = "is_deleted")
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   private boolean is_deleted;
 
+  @PrePersist
+  private void onCreate() {
+    if (this.create_at == null) this.create_at = new Date();
+    if (this.update_at == null) this.update_at = new Date();
+    this.is_deleted = false;
+  }
 
 
+  public Company() {
+  }
 
   public Company(int id, String company_name, Date update_at, Date create_at, boolean is_deleted) {
     this.id = id;
@@ -76,12 +87,11 @@ public class Company {
   }
 
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   public boolean isIs_deleted() {
     return is_deleted;
   }
 
-  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") @NotBlank(message = "is_deleted can not be empty string") boolean is_deleted) {
+  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") boolean is_deleted) {
     this.is_deleted = is_deleted;
   }
 }

@@ -5,9 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-@Table(name = "\"countries\"")
+@Table(name = "\"countries\"", indexes = { @Index(name = "idx_country_name", columnList = "country_name")})
 public class Country {
 
   @Id
@@ -26,11 +27,23 @@ public class Country {
   @Column(name = "create_at")
   private Date create_at;
 
+  @ManyToMany(mappedBy = "countries")
+  private Set<Video> videos;
+
   @Column(name = "is_deleted")
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   private boolean is_deleted;
 
+
+  @PrePersist
+  private void onCreate() {
+    if (this.create_at == null) this.create_at = new Date();
+    if (this.update_at == null) this.update_at = new Date();
+    this.is_deleted = false;
+  }
+
+  public Country() {
+  }
 
   public Country(int id, String country_name, Date update_at, Date create_at, boolean is_deleted) {
     this.id = id;
@@ -73,12 +86,11 @@ public class Country {
   }
 
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   public boolean isIs_deleted() {
     return is_deleted;
   }
 
-  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") @NotBlank(message = "is_deleted can not be empty string") boolean is_deleted) {
+  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") boolean is_deleted) {
     this.is_deleted = is_deleted;
   }
 }

@@ -6,7 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -28,11 +31,9 @@ public class User {
   @NotBlank(message = "password can not be empty string")
   private String password;
 
+  @Enumerated(EnumType.STRING)
   @Column(name = "role")
-  @NotNull(message = "role can not be null")
-  @NotBlank(message = "role can not be empty string")
-
-  private String role;
+  private Role role;
 
   @Column(name = "update_at")
   private Date update_at;
@@ -40,15 +41,30 @@ public class User {
   @Column(name = "create_at")
   private Date create_at;
 
+  @ManyToMany(mappedBy = "likedByUsers")
+  private Set<Video> likedVideos;
+
+
   @Column(name = "is_deleted")
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
   private boolean is_deleted;
+
+//  @OneToMany(cascade = CascadeType.ALL)
+//  @JoinColumn(name = "movie_id")
+//  private List<Movie> watchedMovies = new ArrayList<>();
+
+  @PrePersist
+  private void onCreate() {
+    if (this.create_at == null) this.create_at = new Date();
+    if (this.update_at == null) this.update_at = new Date();
+    if (this.role == null) this.role = Role.ADMIN;
+    this.is_deleted = false;
+  }
 
   public User() {
   }
 
-  public User(int id, String username, String password, String role, Date update_at, Date create_at) {
+  public User(int id, String username, String password, Role role, Date update_at, Date create_at) {
     this.id = id;
     this.username = username;
     this.password = password;
@@ -81,11 +97,11 @@ public class User {
     this.password = password;
   }
 
-  public @NotNull(message = "role can not be null") @NotBlank(message = "role can not be empty string") String getRole() {
+  public Role getRole() {
     return role;
   }
 
-  public void setRole(@NotNull(message = "role can not be null") @NotBlank(message = "role can not be empty string") String role) {
+  public void setRole(Role role) {
     this.role = role;
   }
 
@@ -106,12 +122,12 @@ public class User {
   }
 
   @NotNull(message = "is_deleted can not be null")
-  @NotBlank(message = "is_deleted can not be empty string")
+
   public boolean isIs_deleted() {
     return is_deleted;
   }
 
-  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") @NotBlank(message = "is_deleted can not be empty string") boolean is_deleted) {
+  public void setIs_deleted(@NotNull(message = "is_deleted can not be null") boolean is_deleted) {
     this.is_deleted = is_deleted;
   }
 }

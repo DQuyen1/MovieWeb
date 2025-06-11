@@ -1,9 +1,15 @@
 package com.example.movie.dto;
 
-import java.util.Date;
+import com.example.movie.entity.Language;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class MovieDTO {
-  private String movie_name;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+public class VideoDTO {
+  private int id;
+  private String videoName;
   private String description;
   private String year;
   private int rating;
@@ -14,11 +20,20 @@ public class MovieDTO {
   private Date create_at;
   private String filePath;
   private String contentType;
+  private List<String> galleryImages;
+  private boolean isTrending;
+  private boolean isTop;
+  private Language language;
+  private Set<GenreDTO> genres;
+  private Set<CompanyDTO> companies;
+  private Set<CountryDTO> countries;
+
+
   private boolean is_deleted;
 
-
-  public MovieDTO(String movie_name, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean is_deleted) {
-    this.movie_name = movie_name;
+  public VideoDTO(int id, String videoName, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, List<String> galleryImages, boolean isTrending, boolean isTop, Language language, Set<GenreDTO> genres, Set<CompanyDTO> companies, Set<CountryDTO> countries, boolean is_deleted) {
+    this.id = id;
+    this.videoName = videoName;
     this.description = description;
     this.year = year;
     this.rating = rating;
@@ -29,15 +44,30 @@ public class MovieDTO {
     this.create_at = create_at;
     this.filePath = filePath;
     this.contentType = contentType;
+    this.galleryImages = galleryImages;
+    this.isTrending = isTrending;
+    this.isTop = isTop;
+    this.language = language;
+    this.genres = genres;
+    this.companies = companies;
+    this.countries = countries;
     this.is_deleted = is_deleted;
   }
 
-  public String getMovie_name() {
-    return movie_name;
+  public int getId() {
+    return id;
   }
 
-  public void setMovie_name(String movie_name) {
-    this.movie_name = movie_name;
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getVideoName() {
+    return videoName;
+  }
+
+  public void setVideoName(String videoName) {
+    this.videoName = videoName;
   }
 
   public String getDescription() {
@@ -120,6 +150,14 @@ public class MovieDTO {
     this.contentType = contentType;
   }
 
+  public List<String> getGalleryImages() {
+    return galleryImages;
+  }
+
+  public void setGalleryImages(List<String> galleryImages) {
+    this.galleryImages = galleryImages;
+  }
+
   public boolean isIs_deleted() {
     return is_deleted;
   }
@@ -128,7 +166,53 @@ public class MovieDTO {
     this.is_deleted = is_deleted;
   }
 
+  public Language getLanguage() {
+    return language;
+  }
 
+  public void setLanguage(Language language) {
+    this.language = language;
+  }
+
+  public boolean isTrending() {
+    return isTrending;
+  }
+
+  public void setTrending(boolean trending) {
+    isTrending = trending;
+  }
+
+  public boolean isTop() {
+    return isTop;
+  }
+
+  public void setTop(boolean top) {
+    isTop = top;
+  }
+
+  public Set<GenreDTO> getGenres() {
+    return genres;
+  }
+
+  public void setGenres(Set<GenreDTO> genres) {
+    this.genres = genres;
+  }
+
+  public Set<CompanyDTO> getCompanies() {
+    return companies;
+  }
+
+  public void setCompanies(Set<CompanyDTO> companies) {
+    this.companies = companies;
+  }
+
+  public Set<CountryDTO> getCountries() {
+    return countries;
+  }
+
+  public void setCountries(Set<CountryDTO> countries) {
+    this.countries = countries;
+  }
 }
 
 

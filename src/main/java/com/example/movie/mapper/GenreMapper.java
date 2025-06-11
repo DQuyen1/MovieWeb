@@ -7,7 +7,7 @@ import com.example.movie.entity.Genre;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GerenMapper {
+public class GenreMapper {
 
     public GenreDTO convertToDTO(Genre genre) {
       if (genre == null) {
