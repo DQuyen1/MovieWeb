@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy the jar file (adjust the filename)
 COPY target/movie-api.jar app.jar
 
+
 # Expose port
 EXPOSE 8080
 

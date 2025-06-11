@@ -117,6 +117,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>movie-api</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
