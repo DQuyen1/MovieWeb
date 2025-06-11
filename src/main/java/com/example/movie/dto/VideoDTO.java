@@ -12,10 +12,12 @@ public class MovieDTO {
   private String status;
   private Date update_at;
   private Date create_at;
+  private String filePath;
+  private String contentType;
   private boolean is_deleted;
 
 
-  public MovieDTO(String movie_name, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, boolean is_deleted) {
+  public MovieDTO(String movie_name, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean is_deleted) {
     this.movie_name = movie_name;
     this.description = description;
     this.year = year;
@@ -25,9 +27,10 @@ public class MovieDTO {
     this.status = status;
     this.update_at = update_at;
     this.create_at = create_at;
+    this.filePath = filePath;
+    this.contentType = contentType;
     this.is_deleted = is_deleted;
   }
-
 
   public String getMovie_name() {
     return movie_name;
@@ -101,6 +104,22 @@ public class MovieDTO {
     this.create_at = create_at;
   }
 
+  public String getFilePath() {
+    return filePath;
+  }
+
+  public void setFilePath(String filePath) {
+    this.filePath = filePath;
+  }
+
+  public String getContentType() {
+    return contentType;
+  }
+
+  public void setContentType(String contentType) {
+    this.contentType = contentType;
+  }
+
   public boolean isIs_deleted() {
     return is_deleted;
   }
@@ -108,6 +127,8 @@ public class MovieDTO {
   public void setIs_deleted(boolean is_deleted) {
     this.is_deleted = is_deleted;
   }
+
+
 }
 
 
