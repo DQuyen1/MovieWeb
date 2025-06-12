@@ -10,7 +10,7 @@ WORKDIR /app
 COPY target/movie-api.jar app.jar
 
 # Make mvnw executable (for Linux builds)
-RUN chmod +x mvnw
+RUN chmod +x ./mvnw
 
 # Expose port
 EXPOSE 8080
