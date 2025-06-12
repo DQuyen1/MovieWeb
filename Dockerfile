@@ -16,6 +16,9 @@ RUN chmod +x mvnw
 EXPOSE 8080
 
 
+ENV PORT=8080
+
+
 # Build the project (skip tests to save time)
 RUN ./mvnw clean package -DskipTests
 
