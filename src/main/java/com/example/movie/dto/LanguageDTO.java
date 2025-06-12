@@ -8,6 +8,9 @@ public class LanguageDTO {
   private Date create_at;
   private boolean is_deleted;
 
+  public LanguageDTO() {
+  }
+
   public LanguageDTO(String language_name, Date update_at, Date create_at, boolean is_deleted) {
     this.language_name = language_name;
     this.update_at = update_at;

@@ -12,6 +12,8 @@ public class EpisodeDTO {
     private int durationMinutes;
     private String videoUrl;
 
+    public EpisodeDTO() {
+    }
 
     public EpisodeDTO(Long id, int episodeNumber, String title, String description, LocalDate releaseDate, int durationMinutes, String videoUrl) {
         this.id = id;

@@ -9,6 +9,9 @@ public class UserDTO {
     private Date create_at;
     private boolean is_deleted;
 
+  public UserDTO() {
+  }
+
   public UserDTO(String username, Date update_at, Date create_at, boolean is_deleted) {
     this.username = username;
     this.update_at = update_at;

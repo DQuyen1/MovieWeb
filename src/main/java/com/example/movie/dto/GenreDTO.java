@@ -9,6 +9,9 @@ public class GenreDTO {
   private Date create_at;
   private boolean is_deleted;
 
+  public GenreDTO() {
+  }
+
   public GenreDTO(String name, Date update_at, Date create_at, boolean is_deleted) {
     this.name = name;
     this.update_at = update_at;

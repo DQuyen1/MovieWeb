@@ -8,6 +8,7 @@ import com.example.movie.mapper.CountryMapper;
 import com.example.movie.repository.CountryRepository;
 import com.example.movie.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class CountryServiceImpl implements CountryService {
 
 
   @Override
+  @Cacheable("countries")
   public List<CountryDTO> getAll() {
     List<Country> countries = repo.findAll();
     return countries.stream().map(countryMapper::convertToDTO).collect(Collectors.toList());

@@ -27,9 +27,11 @@ public class VideoDTO {
   private Set<GenreDTO> genres;
   private Set<CompanyDTO> companies;
   private Set<CountryDTO> countries;
-
-
   private boolean is_deleted;
+
+
+  public VideoDTO() {
+  }
 
   public VideoDTO(int id, String videoName, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, List<String> galleryImages, boolean isTrending, boolean isTop, Language language, Set<GenreDTO> genres, Set<CompanyDTO> companies, Set<CountryDTO> countries, boolean is_deleted) {
     this.id = id;

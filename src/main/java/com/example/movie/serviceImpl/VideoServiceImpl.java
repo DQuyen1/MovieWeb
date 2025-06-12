@@ -18,6 +18,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -74,6 +75,7 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
+  @Cacheable("videos")
   public List<VideoDTO> getAll() {
     List<Video> videos = repo.findAll();
     return videos.stream().map(videoMapper::convertToDTO).collect(Collectors.toList());
@@ -82,6 +84,7 @@ public class VideoServiceImpl implements VideoService {
 
 
   @Override
+  @Cacheable(value = "MOVIE_CACHE", key="#id")
   public VideoDTO findVideoById(int id) {
     Video video = repo.findById(id).orElseThrow(() -> {
       return new ResourceNotFoundException("Video not found");

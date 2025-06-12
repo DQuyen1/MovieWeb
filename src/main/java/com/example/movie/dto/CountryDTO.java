@@ -8,6 +8,10 @@ public class CountryDTO {
   private Date create_at;
   private boolean is_deleted;
 
+
+  public CountryDTO() {
+  }
+
   public CountryDTO(String country_name, Date update_at, Date create_at, boolean is_deleted) {
     this.country_name = country_name;
     this.update_at = update_at;

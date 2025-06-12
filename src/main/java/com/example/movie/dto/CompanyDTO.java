@@ -9,6 +9,9 @@ public class CompanyDTO {
   private Date create_at;
   private boolean is_deleted;
 
+  public CompanyDTO() {
+  }
+
   public CompanyDTO(String company_name, Date update_at, Date create_at, boolean is_deleted) {
     this.company_name = company_name;
     this.update_at = update_at;

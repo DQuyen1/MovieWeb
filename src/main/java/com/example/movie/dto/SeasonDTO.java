@@ -7,6 +7,8 @@ public class SeasonDTO {
     private int seasonNumber;
     private String title;
 
+    public SeasonDTO() {
+    }
 
     public SeasonDTO(Long id, int seasonNumber, String title) {
         this.id = id;
