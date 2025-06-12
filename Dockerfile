@@ -7,7 +7,7 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 # Copy everything from your project into the container
-COPY . .
+COPY target/movie-api.jar app.jar
 
 # Make mvnw executable (for Linux builds)
 RUN chmod +x mvnw
