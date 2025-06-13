@@ -28,7 +28,7 @@ public class CountryServiceImpl implements CountryService {
 
 
   @Override
-  @Cacheable("countries")
+//  @Cacheable("countries")
   public List<CountryDTO> getAll() {
     List<Country> countries = repo.findAll();
     return countries.stream().map(countryMapper::convertToDTO).collect(Collectors.toList());

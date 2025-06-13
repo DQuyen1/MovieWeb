@@ -75,7 +75,7 @@ public class VideoServiceImpl implements VideoService {
   }
 
   @Override
-  @Cacheable("videos")
+//  @Cacheable("videos")
   public List<VideoDTO> getAll() {
     List<Video> videos = repo.findAll();
     return videos.stream().map(videoMapper::convertToDTO).collect(Collectors.toList());
@@ -84,7 +84,7 @@ public class VideoServiceImpl implements VideoService {
 
 
   @Override
-  @Cacheable(value = "MOVIE_CACHE", key="#id")
+//  @Cacheable(value = "MOVIE_CACHE", key="#id")
   public VideoDTO findVideoById(int id) {
     Video video = repo.findById(id).orElseThrow(() -> {
       return new ResourceNotFoundException("Video not found");

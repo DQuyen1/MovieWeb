@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  @Cacheable(value = "USER_CACHE", key="#id")
+//  @Cacheable(value = "USER_CACHE", key="#id")
   public UserDTO findUserById(int id) {
     User user = repo.findById(id).orElseThrow(() -> {
       return new ResourceNotFoundException("User not found");
