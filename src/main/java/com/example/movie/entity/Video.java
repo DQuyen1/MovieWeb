@@ -9,7 +9,7 @@ import java.util.*;
 
 @Entity
 @EntityListeners(VideoEntityListener.class)
-@Table(name = "\"Videos\"")
+@Table(name = "\"videos\"", indexes = { @Index(name = "idx_video_name", columnList = "video_name")})
 
 public class Video {
   @Id
@@ -80,14 +80,28 @@ public class Video {
   @JoinColumn(name = "language_id")
   private Language language;
 
-
-  @ManyToMany
+  @ManyToMany(
+          cascade = {CascadeType.ALL},
+          fetch = FetchType.LAZY
+  )
   @JoinTable(
           name = "video_genre",
           joinColumns = @JoinColumn(name = "video_id"),
           inverseJoinColumns = @JoinColumn(name = "genre_id")
   )
-  private Set<Genre> genres;
+  private List<Genre> genres;
+
+
+//  @ManyToMany
+//  @JoinTable(
+//          name = "video_category",
+//          joinColumns = @JoinColumn(name = "video_id"),
+//          inverseJoinColumns = @JoinColumn(name = "category_id")
+//  )
+@ElementCollection
+@Column(name = "categories")
+
+  private List<String> categories;
 
 
   @ManyToMany
@@ -120,18 +134,16 @@ public class Video {
   private Set<User> likedByUsers;
 
 
-//  @PrePersist
-//  private void onCreate() {
-//    if (this.create_at == null) this.create_at = new Date();
-//    if (this.update_at == null) this.update_at = new Date();
-//    this.is_deleted = false;
-//  }
 
 
   public Video() {
   }
 
-  public Video(int id, String videoName, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean isTrending, boolean isTop, boolean is_deleted, Language language, Set<Genre> genres, Set<Company> companies, Set<Country> countries, List<Season> seasons, Set<User> likedByUsers) {
+
+  public Video(boolean isTrending, int id, String videoName, String description, String year, int rating, String post_url,
+               int length, String status, Date update_at, Date create_at, String filePath, String contentType, boolean isTop,
+               List<String> galleryImages, boolean is_deleted, Language language, List<Genre> genres, List<String> categories, Set<Company> companies, Set<Country> countries, List<Season> seasons, Set<User> likedByUsers) {
+    this.isTrending = isTrending;
     this.id = id;
     this.videoName = videoName;
     this.description = description;
@@ -144,15 +156,24 @@ public class Video {
     this.create_at = create_at;
     this.filePath = filePath;
     this.contentType = contentType;
-    this.isTrending = isTrending;
     this.isTop = isTop;
+    this.galleryImages = galleryImages;
     this.is_deleted = is_deleted;
     this.language = language;
     this.genres = genres;
+    this.categories = categories;
     this.companies = companies;
     this.countries = countries;
     this.seasons = seasons;
     this.likedByUsers = likedByUsers;
+  }
+
+  public List<String> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(List<String> categories) {
+    this.categories = categories;
   }
 
   public int getId() {
@@ -300,11 +321,11 @@ public class Video {
     this.language = language;
   }
 
-  public Set<Genre> getGenres() {
+  public List<Genre> getGenres() {
     return genres;
   }
 
-  public void setGenres(Set<Genre> genres) {
+  public void setGenres(List<Genre> genres) {
     this.genres = genres;
   }
 

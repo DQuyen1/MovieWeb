@@ -13,7 +13,7 @@ public class GenreMapper {
       if (genre == null) {
         return null;
       }
-      return new GenreDTO(genre.getName(), genre.getUpdate_at(), genre.getCreate_at(), genre.isIs_deleted());
+      return new GenreDTO(genre.getId(),genre.getName(), genre.getUpdate_at(), genre.getCreate_at(), genre.isIs_deleted());
     }
 
 

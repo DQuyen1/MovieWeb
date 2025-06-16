@@ -1,16 +1,11 @@
 package com.example.movie.mapper;
 
 
-import com.example.movie.dto.CompanyDTO;
-import com.example.movie.dto.CountryDTO;
-import com.example.movie.dto.GenreDTO;
-import com.example.movie.dto.VideoDTO;
-import com.example.movie.entity.Company;
-import com.example.movie.entity.Country;
-import com.example.movie.entity.Genre;
-import com.example.movie.entity.Video;
+import com.example.movie.dto.*;
+import com.example.movie.entity.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,14 +15,18 @@ public class VideoMapper {
     private final GenreMapper genreMapper;
     private final CompanyMapper companyMapper;
     private final CountryMapper countryMapper;
+    private final CategoryMapper categoryMapper;
 
-    public VideoMapper(GenreMapper genreMapper, CompanyMapper companyMapper, CountryMapper countryMapper) {
+    public VideoMapper(GenreMapper genreMapper, CompanyMapper companyMapper, CountryMapper countryMapper, CategoryMapper categoryMapper) {
         this.genreMapper = genreMapper;
         this.companyMapper = companyMapper;
         this.countryMapper = countryMapper;
+        this.categoryMapper = categoryMapper;
     }
 
     public VideoDTO convertToDTO(Video video) {
+
+//        System.out.println(video.getCategories());
       if (video == null) {
         return null;
       }
@@ -40,18 +39,25 @@ public class VideoMapper {
               video.isTop(),
               video.getLanguage(),
               convertToGenreDTO(video.getGenres()),
+              video.getCategories(),
               convertToCompanyDTO(video.getCompanies()),
               convertToCountryDTO(video.getCountries()),
               video.isIs_deleted()
       );
     }
 
-    public Set<GenreDTO> convertToGenreDTO(Set<Genre> genres) {
-            return genres.stream().map(genre -> {
-                return genreMapper.convertToDTO(genre);
-            }).collect(Collectors.toSet());
+    public List<GenreDTO> convertToGenreDTO(List<Genre> genres) {
+        return genres.stream()
+                .map(genre -> genreMapper.convertToDTO(genre))
+                .collect(Collectors.toList());
     }
 
+
+    public Set<CategoryDTO> convertToCategoryDTO(Set<Category> categories) {
+        return categories.stream().map(category -> {
+            return categoryMapper.convertToDTO(category);
+        }).collect(Collectors.toSet());
+    }
 
     public Set<CompanyDTO> convertToCompanyDTO(Set<Company> companies) {
         return companies.stream().map(company -> {

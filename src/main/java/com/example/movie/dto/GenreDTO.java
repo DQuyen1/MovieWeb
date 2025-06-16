@@ -3,7 +3,7 @@ package com.example.movie.dto;
 import java.util.Date;
 
 public class GenreDTO {
-
+  private long id;
   private String name;
   private Date update_at;
   private Date create_at;
@@ -12,11 +12,20 @@ public class GenreDTO {
   public GenreDTO() {
   }
 
-  public GenreDTO(String name, Date update_at, Date create_at, boolean is_deleted) {
+  public GenreDTO(long id, String name, Date update_at, Date create_at, boolean is_deleted) {
+    this.id = id;
     this.name = name;
     this.update_at = update_at;
     this.create_at = create_at;
     this.is_deleted = is_deleted;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getName() {

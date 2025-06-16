@@ -17,6 +17,4 @@ public class LanguageMapper {
       return new LanguageDTO(language.getLanguage_name(),language.getUpdate_at(),language.getCreate_at(),language.isIs_deleted());
     }
 
-
-
 }

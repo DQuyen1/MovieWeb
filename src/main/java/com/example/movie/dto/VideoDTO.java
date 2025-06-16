@@ -24,7 +24,8 @@ public class VideoDTO {
   private boolean isTrending;
   private boolean isTop;
   private Language language;
-  private Set<GenreDTO> genres;
+  private List<GenreDTO> genres;
+  private List<String> categories;
   private Set<CompanyDTO> companies;
   private Set<CountryDTO> countries;
   private boolean is_deleted;
@@ -33,7 +34,9 @@ public class VideoDTO {
   public VideoDTO() {
   }
 
-  public VideoDTO(int id, String videoName, String description, String year, int rating, String post_url, int length, String status, Date update_at, Date create_at, String filePath, String contentType, List<String> galleryImages, boolean isTrending, boolean isTop, Language language, Set<GenreDTO> genres, Set<CompanyDTO> companies, Set<CountryDTO> countries, boolean is_deleted) {
+  public VideoDTO(int id, String videoName, String description, String year, int rating, String post_url, int length,
+                  String status, Date update_at, Date create_at, String filePath, String contentType, List<String> galleryImages,
+                  boolean isTrending, boolean isTop, Language language, List<GenreDTO> genres, List<String> categories, Set<CompanyDTO> companies, Set<CountryDTO> countries, boolean is_deleted) {
     this.id = id;
     this.videoName = videoName;
     this.description = description;
@@ -51,9 +54,19 @@ public class VideoDTO {
     this.isTop = isTop;
     this.language = language;
     this.genres = genres;
+    this.categories = categories;
     this.companies = companies;
     this.countries = countries;
     this.is_deleted = is_deleted;
+  }
+
+
+  public List<String> getCategories() {
+    return categories;
+  }
+
+  public void setCategories(List<String> categories) {
+    this.categories = categories;
   }
 
   public int getId() {
@@ -192,13 +205,13 @@ public class VideoDTO {
     isTop = top;
   }
 
-  public Set<GenreDTO> getGenres() {
+  public List<GenreDTO> getGenres() {
     return genres;
   }
 
-  public void setGenres(Set<GenreDTO> genres) {
+  public void setGenres(List<GenreDTO> genres) {
     this.genres = genres;
-  }
+ }
 
   public Set<CompanyDTO> getCompanies() {
     return companies;

@@ -31,14 +31,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class VideoServiceImpl implements VideoService {
+
+  private static final Map<Long, String[]> HARDCODED_GENRES = Map.ofEntries(
+          Map.entry(1L, new String[] { "Action", "Comedy", "Romance", "Horror" }),
+          Map.entry(2L, new String[] { "Action", "Fantasy", "Sci-Fi", "Thriller", "Mystery" }),
+          Map.entry(3L, new String[] { "Comedy", "Sci-Fi", "Adventure" }),
+          Map.entry(4L, new String[] { "Action", "Historical", "War", "Crime", "Drama" }),
+          Map.entry(5L, new String[] { "Action", "Comedy", "Adventure" }),
+          Map.entry(6L, new String[] { "Comedy", "Sci-Fi", "Adventure" }),
+          Map.entry(7L, new String[] { "Action", "Adventure", "Crime", "Drama" }),
+          Map.entry(8L, new String[] { "Drama" }),
+          Map.entry(9L, new String[] { "Action", "Sci-Fi", "Thriller", "Adventure" }),
+          Map.entry(10L, new String[] { "Action", "Historical", "Adventure" }),
+          Map.entry(52L, new String[] { "Romance", "Fantasy", "Sci-Fi", "Drama" }),
+          Map.entry(53L, new String[] { "Sci-Fi", "Drama" }),
+          Map.entry(54L, new String[] { "Comedy", "Drama" })
+  );
+
 
   final private VideoMapper videoMapper;
   final private VideoRepository repo;
@@ -78,8 +92,8 @@ public class VideoServiceImpl implements VideoService {
 //  @Cacheable("videos")
   public List<VideoDTO> getAll() {
     List<Video> videos = repo.findAll();
-    return videos.stream().map(videoMapper::convertToDTO).collect(Collectors.toList());
 
+    return videos.stream().map(videoMapper::convertToDTO).collect(Collectors.toList());
   }
 
 
@@ -189,14 +203,14 @@ public class VideoServiceImpl implements VideoService {
       newVideo.setCompanies(defaultCompanies);
     }
 
-    if (newVideo.getGenres() == null || newVideo.getGenres().isEmpty()) {
-      Set<Genre> defaultGenres = new HashSet<>();
-      List<Integer> genreIds = List.of(2, 105, 107, 115);
-      for (int id : genreIds) {
-        genreRepository.findById(id).ifPresent(defaultGenres::add);
-      }
-      newVideo.setGenres(defaultGenres);
-    }
+//    if (newVideo.getGenres() == null || newVideo.getGenres().isEmpty()) {
+//      Set<Genre> defaultGenres = new HashSet<>();
+//      List<Integer> genreIds = List.of(2, 105, 107, 115);
+//      for (int id : genreIds) {
+//        genreRepository.findById(id).ifPresent(defaultGenres::add);
+//      }
+//      newVideo.setGenres(defaultGenres);
+//    }
 
     // likedByUsers and seasons are handled by listener or here
     if (newVideo.getLikedByUsers() == null) {

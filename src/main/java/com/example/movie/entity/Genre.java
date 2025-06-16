@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +16,7 @@ public class Genre {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "genre_id")
-  private int id;
+  private long id;
 
   @Column(name = "name", unique = true)
   @NotNull(message = "name can not be null")
@@ -26,6 +28,9 @@ public class Genre {
 
   @Column(name = "create_at")
   private Date create_at;
+
+  @ManyToMany(mappedBy = "genres")
+  private List<Video> videos;
 
   @Column(name = "is_deleted")
   private boolean is_deleted;
@@ -40,7 +45,7 @@ public class Genre {
   public Genre() {
   }
 
-  public Genre(int id, String name, Date update_at, Date create_at, boolean is_deleted) {
+  public Genre(long id, String name, Date update_at, Date create_at, boolean is_deleted) {
     this.id = id;
     this.name = name;
     this.update_at = update_at;
@@ -49,7 +54,7 @@ public class Genre {
   }
 
 
-  public int getId() {
+  public long getId() {
     return id;
   }
 

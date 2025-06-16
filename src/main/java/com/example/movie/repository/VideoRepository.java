@@ -2,6 +2,7 @@ package com.example.movie.repository;
 
 import com.example.movie.entity.Video;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,10 @@ public interface VideoRepository extends JpaRepository<Video, Integer>, JpaSpeci
 
     @Query("SELECT v FROM Video v WHERE LOWER(v.genres) LIKE LOWER(CONCAT('%', :genres, '%'))")
     Video findByVideoGenre(String genre);
+
+
+
+
 
 
 //    @Query("""
